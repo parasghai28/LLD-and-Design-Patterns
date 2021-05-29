@@ -52,5 +52,56 @@ _______________
 
 SINGLE Responsibilty Principles(S) - A class should only know about one thing 
 
+Opne closed principle(O) - software modules like classes, methods, entities should be open for extension and closed for modification. New functionality should
+have minimum changes to already working and tested code. Cohesion is keeping related classes in same package.
+
+
+Liskov substituion principle- subtypes must be substitubale for their basetypes.  The Liskov Substitution principle states,
+that child classes should not be substitutable in place of their parents. If we try to make a child class which cannot be truly substituable by base class, then
+we are breaking LSP rule. In that case we can use interfaces. For exa- if I have a class named Employee which is extended by QA, SDE, BA which have certain
+set of responsbility like comeToOffice(), work(), meeting(). This is following LSP. Now a new class come into picture named- 'RemoteWorker' which will
+need methods like work(), meeting() but not comeToOffice(). In this case if we make Employee class as parent of RemoteWorker then it will break the LSP rule
+as it really does't need comeToOffice(). To overcome this, we can proabably remove comeToOffice() from Employee class and use interface named workInOffice
+and use it to implemented by QA,SDE, BA but not RemoteWorker. This way LSP is not broken.
+
+
+Interface Segregation Principle- If a module does not use functionality from another module, 
+there is no reason to have a direct dependency between them. There should be an abstraction in between to segregate the 2 modules.
+
+
+
+
+Dependency Inversion principle and template pattern(D) - Concrete classes shoudld depend on interfaces and abstarct classes because they change less often 
+are high level modules. High level modules should not depend upon low level modules, and both high level modules and low level modules should 
+depend upon abstraction.  Abstract classes and interfaces dont change as often as concreted derivatives.  Abstract classes and interfaces define a contract for 
+their derivatives.
+
+example of template pattern
+public abstract class Electronic {
+	private String name;
+	
+	public Electronic(String name) {
+		super();
+		this.name = name;
+	}
+	protected abstract void assembly();
+	protected abstract void pack();
+	protected abstract void store();
+	
+	
+	//this is called template method design pattern, used in making common workflows for various objects
+	//Methods are implemented in subclasses, but called from abstract class.
+	public void launch() {
+		if(name!= null && !name.isEmpty()) {
+			assembly();
+			pack();
+			store();
+		}
+	}
+}
+
+
+
+
 
 
