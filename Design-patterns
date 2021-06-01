@@ -187,7 +187,266 @@ from keyboard/mouse/..., distributed databases and blockchains, ...). Most moder
 omprise built-in "event" constructs implementing the observer-pattern components. While not mandatory, most 'observers' 
 implementations would use background threads listening for subject-events and other support mechanisms provided by the kernel
 
+public class EmployeeManagementSystem {
+
+	List<IObserver> observers = new ArrayList<IObserver>();
+	public void registerObserver(IObserver observer) {
+		observers.add(observer);
+	}
+	
+	public void ModifyEmployeeName(int EmployeeId, String name) {
+		notifyAllObservers();
+	}
+
+	private void notifyAllObservers() {
+		for(IObserver i : observers) {
+			i.callMe();
+		}
+	}
+}
+
+
+public class PayrollDepartment implements IObserver {
+
+	@Override
+	public void callMe() {
+		System.out.println("Notifying payroll");
+	}
+}
+
+public class HRDepartment implements IObserver {
+
+	@Override
+	public void callMe() {
+		System.out.println("Notifying HR");
+	}
+
+}
+
+
 Strategy Pattern - 
 
 Template pattern- 
+
+Builder Pattern- Useful when there is an class with many constructors. For exa- if we have a sign up form there are mandatory fields like username, email
+and non mandaory fields like firstname, lastname, age etc and when we create constructor of the class user it may have arguments ranging from 2-5 with varied
+combinations. So how do we tackle it ?- 
+public class Vehicle {
+	//mandatory fields
+	private String email;
+	private String username;
+	//non mandatory fields
+	private String fname;
+	private String lname;
+	private String age;
+	
+	public Vehicle() {
+		
+	}
+
+
+	public Vehicle(String email, String username) {
+		super();
+		this.email = email;
+		this.username = username;
+	}
+
+
+	public Vehicle(String email, String username, String fname, String lname, String age) {
+		super();
+		this.email = email;
+		this.username = username;
+		this.fname = fname;
+		this.lname = lname;
+		this.age = age;
+	}
+
+}
+
+
+
+public class User {
+	//mandatory fields
+	private String email;
+	private String username;
+	//non mandatory fields
+	private String fname;
+	private String lname;
+	private String age;
+	
+	private User(Builder builder) { //Client of this class can no longer use new keyword to instantiate
+		this.username = builder.username;
+		this.email = builder.email;
+		this.fname = builder.fname;
+		this.lname =  builder.lname;
+		this.age = builder.age;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [email=" + email + ", username=" + username + ", fname=" + fname + ", lname=" + lname + ", age="
+				+ age + "]";
+	}
+	
+	
+	public static class Builder{
+		//mandatory fields
+		private String email;
+		private String username;
+		//non mandatory fields
+		private String fname;
+		private String lname;
+		private String age;
+		
+		public Builder(String email, String username) {
+			this.email = email;
+			this.username = username;
+		}
+		
+		public Builder firstName(String value){
+			this.fname = value;
+			return this;
+		}
+		
+		public Builder lastName(String value){
+			this.lname = value;
+			return this;
+		}
+		
+		public Builder age(String value) {
+			this.age = value;
+			return this;
+		}
+		
+		public User build() {
+			return new User(this);
+		}
+
+	}
+}
+
+
+public class App {
+	public static void main(String[] args) {
+		User u1 = new User.Builder("pg", "pg@email.com").build();
+		User u2 = new User.Builder("pg", "pg@email.com").firstName("jan").lastName("man").age("45").build();
+		System.out.println(u1);
+	}
+}
+
+
+Factory Design Pattern - When we want other classes to create objects for us. 
+	
+	
+public interface Vehicle {
+	public void startEngine();
+}	
+
+
+public class Car implements Vehicle {
+
+	@Override
+	public void startEngine() {
+		System.out.println("car engine");
+	}
+
+}
+
+public class Truck implements Vehicle {
+
+	@Override
+	public void startEngine() {
+		System.out.println("engine truck");
+	}
+
+}
+
+public class VehicleFactory {
+	public Vehicle getVehicle(String vehicleType) {
+		if(vehicleType.equalsIgnoreCase("TRUCK")) {
+			return new Truck();
+		} else if(vehicleType.equalsIgnoreCase("CAR"))  {
+			return new Car();
+		}
+		return null;
+	}
+}
+
+
+public class App {
+	public static void main(String[] args) {
+		VehicleFactory fac = new VehicleFactory();
+		Vehicle vehicle = fac.getVehicle("car");
+		vehicle.startEngine();
+	}
+}
+
+
+You can further improve the code by using enum
+
+public class App {
+	public static void main(String[] args) {
+		VehicleFactory fac = new VehicleFactory();
+		Vehicle vehicle = fac.getVehicle(VehicleType.CAR);
+		vehicle.startEngine();
+	}
+}
+
+public class VehicleFactory {
+	public Vehicle getVehicle(VehicleType vehicleType) {
+		return vehicleType.getVehicle();
+	}
+}
+
+
+public enum VehicleType {
+	TRUCK{
+		public Vehicle getVehicle() {
+			return new Truck();
+		}
+	},
+	CAR{
+		public Vehicle getVehicle() {
+			return new Car();
+		}
+	};
+	
+	abstract Vehicle getVehicle();
+}
+
+Singleton Design Pattern
+________________________
+
+
+
+public class PerformanceStage {
+	
+	private static PerformanceStage INSTANCE = null;
+	
+	//private constructor for singleton
+	private PerformanceStage() {
+		
+	}
+	
+	public static PerformanceStage getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new PerformanceStage();
+		}
+		return INSTANCE;
+	}
+	
+	public void turnOnLights() {
+		System.out.println("on");
+	}
+}
+
+
+public class App {
+	public static void main(String[] args) {
+		PerformanceStage st = PerformanceStage.getInstance();
+		st.turnOnLights();
+	}
+}
+
+
 
