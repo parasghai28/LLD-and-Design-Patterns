@@ -1,6 +1,8 @@
 DESIGN PRINCIPLES
 _________________
 
+Common architectural patterns
+
 Methods defined in a class represents the behaviour that instances of that class will have during runtime.
 Associations deifne a relationship between classes. There are multiple types of association - 
 
@@ -50,7 +52,7 @@ When thinking about forming association b/w objects, do not only think about how
 SOFTWARE DESIGNS (SOLID princilples)
 ___________________________________
 
-SINGLE Responsibilty Principles(S) - A class should only know about one thing 
+SINGLE Responsibilty Principles(S) - A class should only know about one thing and have one responsbilty.
 
 Opne closed principle(O) - software modules like classes, methods, entities should be open for extension and closed for modification. New functionality should
 have minimum changes to already working and tested code. Cohesion is keeping related classes in same package.
